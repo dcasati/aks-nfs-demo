@@ -1,11 +1,13 @@
 # aks-nfs-demo
 get NFS 4.1 with AKS up and running
 
+1. Install the CSI Driver: https://github.com/kubernetes-sigs/azurefile-csi-driver/blob/master/docs/install-csi-driver-master.md
+
 ```bash
 
 LOCATION=eastus2
-STORAGERG=rg_nfs
-STORAGEACCT=fileshowto
+STORAGERG=rg_dcasati_nfs
+STORAGEACCT=dcasatinfs
 
 az group create \
     --name $STORAGERG \
@@ -29,15 +31,15 @@ az storage share-rm create \
     --root-squash RootSquash \
     --name "myshare"
 
-cat << 'EOF' > nfs-sc.yaml
+cat << EOF > nfs-sc.yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: azurefile-csi
 provisioner: file.csi.azure.com
 parameters:
-  resourceGroup: files-howto-resource-group 
-  storageAccoun: fileshowto
+  resourceGroup: $STORAGERG
+  storageAccoun: $STORAGEACCT
   protocol: nfs
 EOF
 
