@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azurefile-csi
+provisioner: file.csi.azure.com
+parameters:
+  resourceGroup: rg_dcasati_nfs
+  storageAccount: dcasatinfs
+  protocol: nfs
