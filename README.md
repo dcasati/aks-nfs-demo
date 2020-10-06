@@ -46,7 +46,26 @@ az provider register --namespace Microsoft.Storage
 
 ```bash
 LOCATION=eastus2
-az aks create -l $LOCATION -g MyResourceGroup -n MyManagedCluster --network-plugin azure -k 1.17.9 --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+AKSRG=dcasati-demo-nfs
+CLUSTERNAME=dcasati-demo-nfs
+
+az group create         \
+    --name $AKSRG       \
+    --location $LOCATION
+
+az aks create           \
+    -l $LOCATION        \
+    -g $AKSRG           \
+    -n $CLUSTERNAME     \
+    --network-plugin azure \
+    -k 1.17.9           \
+    --aks-custom-headers EnableAzureDiskFileCSIDriver=true
+```
+
+Once the cluster is created, fetch its kubeconfig:
+
+```bash
+az aks get-credentials -n $CLUSTERNAME -g $AKSRG
 ```
 
 1. Create a storage account 
